@@ -21,7 +21,7 @@
 - **File sharing:**  
   - Installed **Samba**.  
   - Created a basic private share for my own use (SMB, username/password).  
-  - Mapped it from a client machine to confirm read/write works.
+  - Mapped it from  client machine to confirm read/write works.
 - **Resource discipline:**  
   - No heavy containers or VMs yet; focus on stability and remote control first.  
   - Left headroom for future monitoring and firewall/VLAN work.
