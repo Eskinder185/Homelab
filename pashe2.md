@@ -60,7 +60,7 @@ valid users = secureuser
 read only = no
 encrypt passwords = yes
 smb encrypt = required
-✅ In-transit encryption enabled (SMB3 AES-128-GCM).
+ In-transit encryption enabled (SMB3 AES-128-GCM).
 
 Phase 3 — Encrypt Backups (Data at Rest)
 bash
@@ -71,7 +71,7 @@ openssl enc -aes-256-cbc -salt -pbkdf2 -iter 200000 \
   -out /mnt/external/backup.enc \
   -pass file:/root/.keys/backup.pass
 rm /tmp/backup.tar.gz
-✅ AES-256-CBC with PBKDF2 encryption protects backup data.
+ AES-256-CBC with PBKDF2 encryption protects backup data.
 
 Phase 4 — Integrity Monitoring & Intrusion Detection
 Fail2Ban (Detect Brute-Force)
