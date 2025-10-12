@@ -32,7 +32,7 @@
 - [ ] Screenshot: **Tailscale admin** shows HP online  
 - [ ] Screenshot: **SSH session** into HP via Tailscale IP (`whoami` + `hostname`)  
 - [ ] Screenshot: **SMB share** visible from client (Explorer or `smbclient`)  
-- [ ] (Optional) Screenshot: **Proxmox** page reachable on LAN
+- [ ]  Screenshot: **Proxmox** page reachable on LAN
 
 
 ---
