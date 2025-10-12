@@ -34,7 +34,6 @@
 - [ ] Screenshot: **SMB share** visible from client (Explorer or `smbclient`)  
 - [ ] (Optional) Screenshot: **Proxmox** page reachable on LAN
 
-> Put these in `docs/screenshots/` later.
 
 ---
 
