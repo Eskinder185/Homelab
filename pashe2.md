@@ -28,7 +28,7 @@ Built to align with **CompTIA Security+ (SY0-701)** objectives.
 
 ---
 
-## 🪜 Phase-by-Phase Implementation
+##  Phase-by-Phase Implementation
 
 ### **Phase 1 — Proxmox & Container Setup**
 
