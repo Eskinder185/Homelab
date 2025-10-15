@@ -1,11 +1,11 @@
-# 🧠 LegacyLab — Phase 1 Report (System Setup & Remote Access)
+#  LegacyLab — Phase 1 Report (System Setup & Remote Access)
 
 **Date:** 2025-10-08  
 **Host:** HP 15-bs0xx (2017) | Intel i7 | 12 GB RAM | 480 GB SSD  
 
 ---
 
-## ⚙️ TL;DR
+##  TL;DR
 - Installed **Proxmox VE 9** as a bare-metal hypervisor on the HP laptop.  
 - Joined the host to my **Tailscale Tailnet** for secure remote connectivity.  
 - Verified **remote SSH** access from outside my local network.  
@@ -14,7 +14,7 @@
 
 ---
 
-## 🧩 What I Did (Step by Step)
+##  What I Did (Step by Step)
 
 ### 1. Base Hypervisor Setup
 - Booted into **Proxmox VE 9.0**.  
@@ -22,7 +22,7 @@
 - Verified Proxmox core services are active:
   ```bash
   sudo systemctl is-active pvedaemon pveproxy pvestatd pve-cluster
-✅ All returned active.
+ All returned active.
 
 2. Secure Remote Access via Tailscale
 Installed and authenticated Tailscale:
@@ -74,7 +74,7 @@ Mapped the share from a client:
 php-template
 Copy code
 \\<TAILSCALE_IP>\SecureShare
-✅ Read/write confirmed.
+ Read/write confirmed.
 
 4. Resource Discipline
 No containers or VMs yet — focus on stability and connectivity.
@@ -103,21 +103,21 @@ systemctl status ssh --no-pager
 # Samba health
 systemctl status smbd --no-pager
 testparm -s
-✅ Expected Results
+ Expected Results
 tailscale status → node connected to tailnet.
 
 SSH reachable externally (through Tailscale).
 
 smbd active and configuration validated cleanly.
 
-⚠️ Limits / Reality Check
+ Limits / Reality Check
 No VLAN segmentation or firewall yet (coming in Phase 3).
 
 No monitoring dashboards yet (coming in Phase 2).
 
 Hardware constraints (2017 i7, 12 GB RAM) — keeping it efficient.
 
-🔮 Next (Phase 2 Preview)
+ Next (Phase 2 Preview)
 Add Prometheus + Node Exporter to monitor CPU, memory, and disk.
 
 Add Loki + Promtail to collect and centralize auth and Samba logs.
