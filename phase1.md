@@ -42,7 +42,7 @@ From an external network, connected using SSH:
 bash
 Copy code
 ssh analyst@100.xxx.xxx.xxx
-✅ Successfully logged in — no router port forwarding needed.
+ Successfully logged in — no router port forwarding needed.
 
 3. Private File Sharing (Samba)
 Installed and configured Samba:
@@ -90,7 +90,7 @@ Screenshot: SSH session via Tailscale IP	☐
 Screenshot: SMB share visible from client	☐
 Screenshot: Proxmox Web UI reachable on LAN	☐
 
-🧪 Verification Commands
+ Verification Commands
 bash
 Copy code
 # Tailscale connectivity
