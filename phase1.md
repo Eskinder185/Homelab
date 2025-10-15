@@ -1,72 +1,125 @@
-# LegacyLab — Phase 1 Report (What I Did)
+# 🧠 LegacyLab — Phase 1 Report (System Setup & Remote Access)
 
 **Date:** 2025-10-08  
-**Host:** HP 15-bs0xx (2017), Intel i7, 12 GB RAM, 480 GB SSD
-
-## TL;DR
-- Installed **Proxmox VE** on the HP laptop.
-- Installed and joined **Tailscale** to my tailnet.
-- **Verified remote SSH** access to the HP from **outside** the home network (through Tailscale).
-- Installed **Samba (SMB)** to act as a simple private file share.
-- Kept the system lightweight to save RAM and disk for future phases.
+**Host:** HP 15-bs0xx (2017) | Intel i7 | 12 GB RAM | 480 GB SSD  
 
 ---
 
-## What I did (short bullets)
-- **Base:** Booted the HP and confirmed **Proxmox VE** is installed and reachable on the LAN.
-- **Secure remote access:**  
-  - Installed **Tailscale** on the HP host.  
-  - Logged in and **connected to tailnet**.  
-  - From an external network, **SSH’d into the HP** using the Tailscale IP — confirmed I can manage it remotely.
-- **File sharing:**  
-  - Installed **Samba**.  
-  - Created a basic private share for my own use (SMB, username/password).  
-  - Mapped it from  client machine to confirm read/write works.
-- **Resource discipline:**  
-  - No heavy containers or VMs yet; focus on stability and remote control first.  
-  - Left headroom for future monitoring and firewall/VLAN work.
+## ⚙️ TL;DR
+- Installed **Proxmox VE 9** as a bare-metal hypervisor on the HP laptop.  
+- Joined the host to my **Tailscale Tailnet** for secure remote connectivity.  
+- Verified **remote SSH** access from outside my local network.  
+- Installed **Samba (SMB)** for basic private file-sharing within the tailnet.  
+- Kept the environment **lightweight and stable**, preserving memory and disk space for future monitoring and security phases.
 
 ---
 
-## Proof I collected (or will add)
-- [ ] Screenshot: **Tailscale admin** shows HP online  
-- [ ] Screenshot: **SSH session** into HP via Tailscale IP (`whoami` + `hostname`)  
-- [ ] Screenshot: **SMB share** visible from client (Explorer or `smbclient`)  
-- [ ]  Screenshot: **Proxmox** page reachable on LAN
+## 🧩 What I Did (Step by Step)
 
+### 1. Base Hypervisor Setup
+- Booted into **Proxmox VE 9.0**.  
+- Confirmed the web GUI (`https://<LAN_IP>:8006`) is reachable.  
+- Verified Proxmox core services are active:
+  ```bash
+  sudo systemctl is-active pvedaemon pveproxy pvestatd pve-cluster
+✅ All returned active.
 
----
+2. Secure Remote Access via Tailscale
+Installed and authenticated Tailscale:
 
-## Commands I used to verify (read-only checks)
-```bash
-# On the HP (or via SSH):
+bash
+Copy code
+sudo apt update && sudo apt install -y tailscale
+sudo tailscale up --ssh
+Confirmed the device joined my tailnet:
+
+bash
+Copy code
+tailscale status
+tailscale ip -4
+From an external network, connected using SSH:
+
+bash
+Copy code
+ssh analyst@100.xxx.xxx.xxx
+✅ Successfully logged in — no router port forwarding needed.
+
+3. Private File Sharing (Samba)
+Installed and configured Samba:
+
+bash
+Copy code
+sudo apt install -y samba
+sudo mkdir -p /secure_share
+sudo useradd -M secureuser
+sudo smbpasswd -a secureuser
+Edited /etc/samba/smb.conf:
+
+ini
+Copy code
+[SecureShare]
+path = /secure_share
+valid users = secureuser
+read only = no
+encrypt passwords = yes
+smb encrypt = required
+Restarted and tested configuration:
+
+bash
+Copy code
+sudo systemctl restart smbd
+testparm -s
+Mapped the share from a client:
+
+php-template
+Copy code
+\\<TAILSCALE_IP>\SecureShare
+✅ Read/write confirmed.
+
+4. Resource Discipline
+No containers or VMs yet — focus on stability and connectivity.
+
+Left plenty of headroom for future monitoring stacks.
+
+Verified idle load (htop) under 5% CPU and ~2 GB RAM usage.
+
+📸 Proof Checklist
+Evidence	Status
+Screenshot: Tailscale Admin Console showing HP online	☐
+Screenshot: SSH session via Tailscale IP	☐
+Screenshot: SMB share visible from client	☐
+Screenshot: Proxmox Web UI reachable on LAN	☐
+
+🧪 Verification Commands
+bash
+Copy code
+# Tailscale connectivity
 tailscale status
 tailscale ip -4
 
-# Confirm SSH is running
+# SSH service status
 systemctl status ssh --no-pager
 
-# Confirm Samba is running and config parses
+# Samba health
 systemctl status smbd --no-pager
 testparm -s
-Expected results
+✅ Expected Results
+tailscale status → node connected to tailnet.
 
-tailscale status shows this node connected.
+SSH reachable externally (through Tailscale).
 
-You can SSH to the Tailscale IP from outside the home network.
+smbd active and configuration validated cleanly.
 
-smbd is active; testparm -s prints a clean config summary.
+⚠️ Limits / Reality Check
+No VLAN segmentation or firewall yet (coming in Phase 3).
 
-Limits / reality check (Phase 1)
-No VLANs or firewall rules yet (that’s Phase 3).
+No monitoring dashboards yet (coming in Phase 2).
 
-No monitoring dashboards yet (that’s Phase 2).
+Hardware constraints (2017 i7, 12 GB RAM) — keeping it efficient.
 
-Old hardware = limited RAM/CPU; I’m keeping services minimal to stay stable.
+🔮 Next (Phase 2 Preview)
+Add Prometheus + Node Exporter to monitor CPU, memory, and disk.
 
-What’s next (Phase 2 preview)
-Add Prometheus + Node Exporter for CPU/RAM/disk.
+Add Loki + Promtail to collect and centralize auth and Samba logs.
 
-Add Loki + Promtail to collect auth and Samba logs.
-
-Build a simple Grafana dashboard + basic alert.
+Create a Grafana Dashboard to visualize metrics and alerts in real time.
